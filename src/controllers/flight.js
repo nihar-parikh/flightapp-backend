@@ -4,7 +4,7 @@ import Flight from "../models/flight.js";
 //Add flight
 export const addFlight = catchAsyncErrors(async (req, res, next) => {
   const { from, to, departureDate, landingDate, price } = req.body;
-  // console.log(req.body);
+  console.log(req.body);
 
   const flight = await Flight.create({
     from,
@@ -13,6 +13,7 @@ export const addFlight = catchAsyncErrors(async (req, res, next) => {
     landingDate: new Date(landingDate),
     price,
   });
+  console.log(flight);
   res.status(201).json({
     success: true,
     flight,
@@ -89,7 +90,7 @@ export const getAllFlights = catchAsyncErrors(async (req, res, next) => {
     };
   }
 
-  const flights = await Flight.find(searchQuery);
+  const flights = await Flight.find(searchQuery).sort({ price: 1 });
   res.status(200).json({
     success: true,
     flights,

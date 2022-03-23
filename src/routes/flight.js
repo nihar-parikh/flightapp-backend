@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post(
   "/flights/new",
-  // isAuthenticatedUser,
-  // authorizeRoles("admin"),
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
   addFlight
 );
 router.get("/flights", getAllFlights);

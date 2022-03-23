@@ -5,27 +5,27 @@ export default (error, req, res, next) => {
   error.statusCode = error.statusCode || 500;
   error.message = error.message || "Internal Server error";
 
-  //wrong mongodb id erroror -> for cast erroror
+  //wrong mongodb id error -> for cast error
   if (error.name === "Casterror") {
     const message = `Resource not found. Invalid: ${error.path}`;
     error = new ErrorHandler(message, 400);
   }
 
-  // Wrong JWT erroror
+  // Wrong JWT error
   if (error.name === "JsonWebTokenerror") {
     const message = `Json Web Token is invalid, Try again `;
-    error = new errorHandler(message, 400);
+    error = new ErrorHandler(message, 400);
   }
 
-  // JWT EXPIRE erroror
+  // JWT EXPIRE error
   if (error.name === "TokenExpirederror") {
     const message = `Json Web Token is Expired, Try again `;
-    error = new errorHandler(message, 400);
+    error = new ErrorHandler(message, 400);
   }
 
   res.status(error.statusCode).json({
     success: false,
-    // erroror: erroror.stack, //stack gives the exact path where the erroror has occured
+    // error: error.stack, //stack gives the exact path where the erroror has occured
     message: error.message,
   });
 };
