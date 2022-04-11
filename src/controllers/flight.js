@@ -96,3 +96,55 @@ export const getAllFlights = catchAsyncErrors(async (req, res, next) => {
     flights,
   });
 });
+
+//update flight
+export const updateFlight = catchAsyncErrors(async (req, res, next) => {
+  const { from, to, departureDate, landingDate, price } = req.body;
+  console.log(req.body);
+
+  const updatedFlight = {};
+  if (from) {
+    updatedFlight.from = from;
+  }
+  if (to) {
+    updatedFlight.to = to;
+  }
+  if (departureDate) {
+    updatedFlight.departureDate = new Date(departureDate);
+  }
+  if (landingDate) {
+    updatedFlight.landingDate = new Date(landingDate);
+  }
+  if (price) {
+    updatedFlight.price = price;
+  }
+  const flight = await Flight.findByIdAndUpdate(req.params.id, updatedFlight, {
+    new: true,
+  });
+  if (!flight) {
+    return res.status(404).send({
+      success: false,
+    });
+  }
+  await flight.save();
+
+  console.log(flight);
+  res.status(200).json({
+    success: true,
+    flight,
+  });
+});
+
+//delete flight
+export const deleteFlight = catchAsyncErrors(async (req, res, next) => {
+  const flight = await Flight.findByIdAndDelete(req.params.id);
+  if (!flight) {
+    return res.status(404).send({
+      success: false,
+    });
+  }
+  res.status(200).send({
+    success: "flight has been deleted successfully",
+    flight: flight,
+  });
+});
